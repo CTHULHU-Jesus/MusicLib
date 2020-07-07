@@ -12,7 +12,6 @@ eath = beat/8
 sixh = beat/16
 
 
-rightHand :: [(Cord,Float)]
 rightHand = 
     [([Note E 4],quat),
      ([Note D 4],quat),
