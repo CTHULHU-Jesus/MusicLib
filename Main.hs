@@ -1,5 +1,5 @@
 module Main where
-import MusicLib
+-- import MusicLib
 import MusicBase
 import Notes
 import Synth

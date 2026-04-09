@@ -40,18 +40,22 @@ save music filename =
 wait :: Float -> Music
 wait t = Music (\_->0) t
 
+-- square Wave
 square :: Wave
 square freq time = Music (\t -> sum . take lim . map (f t) $ [0..]) time
     where
         lim = 10
         f t n = (sin $ freq*t*2*pi*(2*n+1))/(2*n+1)
 
+--sine wave
 sine :: Wave
 sine freq time = Music (\t -> sin (t*2*pi*freq)) time
 
+--- returns the time the music will be played for
 getTime :: Music -> Float
 getTime (Music _ t) = t
 
+--- play m1 first and then m2
 addThen :: Music -> Music -> Music
 addThen (Music a t1) (Music b t2) =
     Music 
@@ -65,17 +69,19 @@ andThen :: Music -> Music -> Music
 andThen m1 m2 =
     addThen (noContinue m1) m2
 
+-- returns m with m's volume decreasing exponetialy. 
 strike :: Music -> Music
 strike m =
     let
         time = getTime m
     in
       (Music (\t -> exp $ -4*time*t) time) * m
-
+-- retunrs m with m's volume being pulsed once
 pulse :: Music -> Music
-pulse m@(Music f time) =
+pulse m@(Music _f time) =
     noContinue $ (sine (1/(2*time)) time) * m
 
+--- Takes music and returns music that ends after its specified time
 noContinue :: Music -> Music
 noContinue m@(Music f time) = 
     Music 
